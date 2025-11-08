@@ -1,13 +1,14 @@
 import { LayoutDashboard, FileText, Activity, BarChart3, Layers, Menu } from "lucide-react";
 import { useState } from "react";
+import { NavLink } from "@/components/NavLink";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
-  { icon: LayoutDashboard, label: "Dash board", active: false },
-  { icon: FileText, label: "Case management", active: true },
-  { icon: Activity, label: "Resource lens", active: false },
-  { icon: BarChart3, label: "Analytics & Reports", active: false },
-  { icon: Layers, label: "Valence layer", active: false },
+  { icon: LayoutDashboard, label: "Dash board", path: "/" },
+  { icon: FileText, label: "Case management", path: "/case-management" },
+  { icon: Activity, label: "Resource lens", path: "/resource-lens" },
+  { icon: BarChart3, label: "Analytics & Reports", path: "/analytics" },
+  { icon: Layers, label: "Valence layer", path: "/valence-layer" },
 ];
 
 export function Sidebar() {
@@ -45,17 +46,15 @@ export function Sidebar() {
           <ul className="space-y-1">
             {navigationItems.map((item) => (
               <li key={item.label}>
-                <button
-                  className={cn(
-                    "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors",
-                    item.active
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground hover:bg-muted"
-                  )}
+                <NavLink
+                  to={item.path}
+                  end={item.path === "/"}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors text-foreground hover:bg-muted"
+                  activeClassName="bg-primary text-primary-foreground hover:bg-primary"
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.label}</span>
-                </button>
+                </NavLink>
               </li>
             ))}
           </ul>
