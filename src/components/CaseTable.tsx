@@ -17,7 +17,7 @@ const cases: Case[] = [
   {
     id: "NCDC-2025-001",
     disease: "Diphtheria",
-    location: "Lagos",
+    location: "Kano",
     severity: "Critical",
     status: "Active",
     reported: "2 hours ago",

@@ -12,7 +12,45 @@ interface CaseDetailsPanelProps {
   };
 }
 
+interface CaseDetails {
+  patientInfo: string;
+  locationDetail: string;
+  facility: string;
+  reportedBy: string;
+  reportingMethod: string;
+  reportedDate: string;
+  symptoms: string;
+  linkedCases?: string;
+  responseStatus?: string;
+  labResults?: string;
+}
+
+const caseDetailsMap: Record<string, CaseDetails> = {
+  "NCDC-2025-001": {
+    patientInfo: "12 years, Male",
+    locationDetail: "Sabon Gari, Kano",
+    facility: "Community Health Clinic, Kano",
+    reportedBy: "Nurse Fatima Ibrahim",
+    reportingMethod: "ATOM Mobile App - Real-time Alert",
+    reportedDate: "2025-11-10, 09:30 AM",
+    symptoms: "Sore throat (2 days), Grey membrane on tonsils, Difficulty swallowing, Low-grade fever",
+    linkedCases: "3 additional suspected cases identified in same compound (automated contact tracing initiated)",
+    responseStatus: "Vaccination team deployed within 1 hour. Community health education campaign activated. Isolation protocols in place.",
+    labResults: "Sample collected and sent for confirmation. Preliminary rapid test: Positive for diphtheria"
+  }
+};
+
 export function CaseDetailsPanel({ caseData }: CaseDetailsPanelProps) {
+  const details = caseDetailsMap[caseData.id] || {
+    patientInfo: "45 years, Male",
+    locationDetail: caseData.location === "Abuja" ? "Garki, Abuja" : caseData.location,
+    facility: `National Hospital ${caseData.location}`,
+    reportedBy: "Dr Okonkwo",
+    reportingMethod: "Via Health worker App",
+    reportedDate: "2025-10-26",
+    symptoms: "Severe diarrhoea, Dehydration, Vomiting"
+  };
+
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case "Critical":
@@ -74,34 +112,55 @@ export function CaseDetailsPanel({ caseData }: CaseDetailsPanelProps) {
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Patient info</p>
-        <p className="text-sm">45 years, Male</p>
+        <p className="text-sm">{details.patientInfo}</p>
       </div>
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Location</p>
-        <p className="text-sm">{caseData.location === "Abuja" ? "Garki, Abuja" : caseData.location}</p>
+        <p className="text-sm">{details.locationDetail}</p>
       </div>
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Facility</p>
-        <p className="text-sm">National Hospital {caseData.location}</p>
+        <p className="text-sm">{details.facility}</p>
       </div>
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Reported by</p>
-        <p className="text-sm">Dr Okonkwo</p>
-        <p className="text-xs text-muted-foreground mt-1">Via Health worker App</p>
+        <p className="text-sm">{details.reportedBy}</p>
+        <p className="text-xs text-muted-foreground mt-1">{details.reportingMethod}</p>
       </div>
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Reported Date</p>
-        <p className="text-sm">2025-10-26</p>
+        <p className="text-sm">{details.reportedDate}</p>
       </div>
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Symptoms</p>
-        <p className="text-sm">Severe diarrhoea, Dehydration, Vomiting</p>
+        <p className="text-sm">{details.symptoms}</p>
       </div>
+
+      {details.linkedCases && (
+        <div>
+          <p className="text-sm text-muted-foreground mb-2">Linked Cases</p>
+          <p className="text-sm">{details.linkedCases}</p>
+        </div>
+      )}
+
+      {details.responseStatus && (
+        <div>
+          <p className="text-sm text-muted-foreground mb-2">Response Status</p>
+          <p className="text-sm">{details.responseStatus}</p>
+        </div>
+      )}
+
+      {details.labResults && (
+        <div>
+          <p className="text-sm text-muted-foreground mb-2">Lab Results</p>
+          <p className="text-sm">{details.labResults}</p>
+        </div>
+      )}
 
       <Button className="w-full">Update case</Button>
     </div>
